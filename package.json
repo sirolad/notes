@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "server1": "PORT=3001 node ./bin/www",
+    "server2": "PORT=3002 node ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
