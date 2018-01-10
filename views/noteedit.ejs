@@ -5,24 +5,33 @@
 </head>
 <body>
 <% include pageHeader %>
-<form method='POST' action='/notes/save'>
-    <input type='hidden' name='docreate' value='<%=
-    docreate ? "create" : "update"%>'>
-    <p>Key:
-        <% if (docreate) { %>
-        <input type='text' name='notekey' value=''/>
-        <% } else { %>
-        <%= note ? notekey : "" %>
-        <input type='hidden' name='notekey' value='<%=
-            note ? notekey : "" %>'/>
-        <% } %>
-    </p>
-    <p>Title: <input type='text' name='title' value='<%=
-        note ? note.title : "" %>' /></p>
-    <br/><textarea rows=5 cols=40 name='body' ><%=
-        note ? note.body : "" %></textarea>
-    <br/><input type='submit' value='Submit' />
-</form>
+<div class="row"><div class="col-xs-12">
+        <form method='POST' action='/notes/save'>
+            <input type='hidden' name='docreate' value='<%= docreate ? "create" :
+                    "update"%>'>
+            <div class="form-group">
+                <label for="notekey">Key</label>
+                <% if (docreate) { %>
+                <input class="form-control" type='text' id='notekey'
+                       name='notekey' value='' placeholder='key'/>
+                <% } else { %>
+                <%= note ? notekey : "" %>
+                <input class="form-control" type='hidden' id='notekey'
+                       name='notekey' value='<%= note ? notekey : "" %>'/>
+                <% } %>
+            </div>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id='title' name='title'
+                       placeholder="note title" value='<%= note ? note.title : "" %>'>
+            </div>
+            <div class="form-group">
+<textarea class="form-control" name='body' rows="5">
+<%= note ? note.body : "" %></textarea>
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+    </div></div>
 <% include footer %>
 </body>
 </html>

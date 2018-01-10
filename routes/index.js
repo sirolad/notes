@@ -18,7 +18,13 @@ router.get('/', function(req, res, next) {
             return Promise.all(keyPromises);
         })
         .then(notelist => {
-            res.render('index', { title: 'Notes', notelist: notelist });
+            res.render('index', {
+                title: 'Notes',
+                notelist: notelist,
+                breadcrumbs: [
+                    { href: '/', text: 'Home'}
+                ]
+            });
         })
         .catch(err => { next(err); });
 });

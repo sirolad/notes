@@ -22,6 +22,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/vendor/bootstrap', express.static(
+    path.join(__dirname, 'bower_components', 'bootstrap', 'dist')));
+app.use('/vendor/jquery', express.static(
+    path.join(__dirname, 'bower_components', 'jquery', 'dist')));
 
 app.use('/', index);
 // app.use('/users', users);

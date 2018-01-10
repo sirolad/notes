@@ -8,7 +8,12 @@ router.get('/add', (req, res, next) => {
         title: "Add a Note",
         docreate: true,
         notekey: "",
-        note: undefined
+        note: undefined,
+        breadcrumbs: [
+            { href: '/', text: 'Home' },
+            { active: true, text: "Add Note" }
+        ],
+        hideAddNote: true
     });
 });
 
@@ -36,7 +41,11 @@ router.get('/view', (req, res, next) => {
             res.render('noteview', {
                 title: note ? note.title : "",
                 notekey: req.query.key,
-                note: note
+                note: note,
+                breadcrumbs: [
+                    { href: '/', text: 'Home' },
+                    { active: true, text: note.title }
+                ]
             });
         })
         .catch(err => { next(err); });
@@ -50,7 +59,11 @@ router.get('/edit', (req, res, next) => {
                 title: note ? ("Edit " + note.title) : "Add a Note",
                 docreate: false,
                 notekey: req.query.key,
-                note: note
+                note: note,
+                breadcrumbs: [
+                    { href: '/', text: 'Home' },
+                    { active: true, text: note.title }
+                ]
             });
         })
         .catch(err => { next(err); });
@@ -63,7 +76,11 @@ router.get('/destroy', (req, res, next) => {
             res.render('notedestroy', {
                 title: note ? note.title : "",
                 notekey: req.query.key,
-                note: note
+                note: note,
+                breadcrumbs: [
+                    { href: '/', text: 'Home' },
+                    { active: true, text: 'Delete Note' }
+                ]
             });
         })
         .catch(err => { next(err); });

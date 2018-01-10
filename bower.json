@@ -1,0 +1,21 @@
+{
+  "name": "notes",
+  "description": "Note FE",
+  "main": "",
+  "authors": [
+    "Surajudeen Akande <surajudeen.akande@andela.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/andela-sakande/notes",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "3.3.6"
+  }
+}
