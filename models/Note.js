@@ -4,4 +4,16 @@ module.exports = class Note {
         this.title = title;
         this.body = body;
     }
+
+    get JSON() {
+        return JSON.stringify({
+            key: this.key, title: this.title, body: this.body
+        });
+    }
+
+    static fromJSON(json) {
+        const data = JSON.parse(json);
+        const note = new Note(data.key, data.title, data.body);
+        return note;
+    }
 }
