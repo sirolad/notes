@@ -1,7 +1,14 @@
 const util = require('util');
 const express = require('express');
 const router = express.Router();
-const notes = require('../models/notes-memory');
+
+const path = require('path');
+const notes = require(process.env.NOTES_MODEL
+    ? path.join('..', process.env.NOTES_MODEL)
+    : '../models/notes-memory');
+const log = require('debug')('notes:router-notes');
+const error = require('debug')('notes:error');
+
 // Add Note.
 router.get('/add', (req, res, next) => {
     res.render('noteedit', {

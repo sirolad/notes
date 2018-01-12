@@ -30,3 +30,73 @@ function readJSON(notesdir, key) {
         });
     });
 }
+
+exports.update = exports.create = function(key, title, body) {
+    return notesDir().then(notesdir => {
+        if (key.indexOf('/') >= 0) throw new Error(`key ${key} cannot contain '/'`);
+        var note = new Note(key, title, body);
+        const writeTo = filePath(notesdir, key);
+        const writeJSON = note.JSON;
+        log('WRITE '+ writeTo +' '+ writeJSON);
+        return new Promise((resolve, reject) => {
+            fs.writeFile(writeTo, writeJSON, 'utf8', err => {
+                if (err) reject(err);
+                else resolve(note);
+            });
+        });
+    });
+};
+
+exports.read = function(key) {
+    return notesDir().then(notesdir => {
+        return readJSON(notesdir, key).then(thenote => {
+            log('READ '+ notesdir +'/'+ key +' '+ util.inspect(thenote));
+            return thenote;
+        });
+    });
+};
+
+exports.destroy = function(key) {
+    return notesDir().then(notesdir => {
+        return new Promise((resolve, reject) => {
+            fs.unlink(filePath(notesdir, key), err => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+    });
+};
+
+exports.keylist = function() {
+    return notesDir().then(notesdir => {
+        return new Promise((resolve, reject) => {
+            fs.readdir(notesdir, (err, filez) => {
+                if (err) return reject(err);
+                if (!filez) filez = [];
+                resolve({ notesdir, filez });
+            });
+        });
+    })
+        .then(data => {
+            log('keylist dir='+ data.notesdir +' files='+ util.inspect(data.filez));
+            var thenotes = data.filez.map(fname => {
+                var key = path.basename(fname, '.json');
+                log('About to READ '+ key);
+                return readJSON(data.notesdir, key).then(thenote => {
+                    return thenote.key;
+                });
+            });
+            return Promise.all(thenotes);
+        });
+};
+
+exports.count = function() {
+    return notesDir().then(notesdir => {
+        return new Promise((resolve, reject) => {
+            fs.readdir(notesdir, (err, filez) => {
+                if (err) return reject(err);
+                resolve(filez.length);
+            });
+        });
+    });
+};

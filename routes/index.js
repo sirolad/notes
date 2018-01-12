@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const notes = require('../models/notes-memory');
+var path = require('path');
+const notes = require(process.env.NOTES_MODEL ? path.join('..', process.env.NOTES_MODEL) : '../models/notes-memory');
+
+const log   = require('debug')('notes:router-home');
+const error = require('debug')('notes:error');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {

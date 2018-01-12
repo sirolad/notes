@@ -6,7 +6,8 @@
     "start": "node ./bin/www",
     "server1": "PORT=3001 node ./bin/www",
     "server2": "PORT=3002 node ./bin/www",
-    "postinstall": "bower install"
+    "postinstall": "bower install",
+    "start-fs": "NOTES_MODEL=models/notes-fs node ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
