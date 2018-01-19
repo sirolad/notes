@@ -1,7 +1,0 @@
-dbname: notes
-username: root
-password:
-params:
-  host: localhost
-  port: 5432
-  dialect: pgsql

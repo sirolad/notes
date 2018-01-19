@@ -7,19 +7,19 @@ a {
   color: #00B7FF;
 }
 
-header {
-  background: #eeeeee;
-  padding: 5px;
+header.page-header {
+    background: #eeeeee;
+    padding: 5px;
 }
 
 header.page-header h1 {
-  margin-top: 5px;
+    margin-top: 5px;
 }
 
 header.page-header .breadcrumb {
-  margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 header.page-header a.btn-primary {
-  float: right;
+    float: right;
 }

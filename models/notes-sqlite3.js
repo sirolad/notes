@@ -1,10 +1,15 @@
-const util = require('util');
+'use strict';
+
+const util    = require('util');
 const sqlite3 = require('sqlite3');
-const log = require('debug')('notes:sqlite3-model');
-const error = require('debug')('notes:error');
-const Note = require('./Note');
+
+const log     = require('debug')('notes:sqlite3-model');
+const error   = require('debug')('notes:error');
+
+const Note    = require('./Note');
+
 sqlite3.verbose();
-let db; // store the database connection here
+var db; // store the database connection here
 
 exports.connectDB = function() {
     return new Promise((resolve, reject) => {
@@ -34,7 +39,7 @@ exports.create = function(key, title, body) {
                         log('CREATE '+ util.inspect(note));
                         resolve(note);
                     }
-                });
+            });
         });
     });
 };
@@ -44,7 +49,7 @@ exports.update = function(key, title, body) {
         var note = new Note(key, title, body);
         return new Promise((resolve, reject) => {
             db.run("UPDATE notes "+
-                "SET title = ?, body = ? "+
+                "SET  title = ?, body = ? "+
                 "WHERE notekey = ?",
                 [ title, body, key ], err => {
                     if (err) reject(err);
@@ -52,7 +57,7 @@ exports.update = function(key, title, body) {
                         log('UPDATE '+ util.inspect(note));
                         resolve(note);
                     }
-                });
+            });
         });
     });
 };
@@ -62,14 +67,13 @@ exports.read = function(key) {
         return new Promise((resolve, reject) => {
             db.get("SELECT * FROM notes WHERE notekey = ?",
                 [ key ], (err, row) => {
-                    if (err) reject(err);
-                    else {
-                        var note = new Note(row.notekey,
-                            row.title, row.body);
-                        log('READ '+ util.inspect(note));
-                        resolve(note);
-                    }
-                });
+                if (err) reject(err);
+                else {
+                    var note = new Note(row.notekey, row.title, row.body);
+                    log('READ '+ util.inspect(note));
+                    resolve(note);
+                }
+            });
         });
     });
 };
@@ -79,12 +83,12 @@ exports.destroy = function(key) {
         return new Promise((resolve, reject) => {
             db.run("DELETE FROM notes WHERE notekey = ?;",
                 [ key ], err => {
-                    if (err) reject(err);
-                    else {
-                        log('DESTROY '+ key);
-                        resolve();
-                    }
-                });
+                if (err) reject(err);
+                else {
+                    log('DESTROY '+ key);
+                    resolve();
+                }
+            });
         });
     });
 };
@@ -100,7 +104,10 @@ exports.keylist = function() {
                 },
                 (err, num) => {
                     if (err) reject(err);
-                    else resolve(keyz);
+                    else {
+                        log('KEYLIST '+ num +' '+ util.inspect(keyz));
+                        resolve(keyz);
+                    }
                 });
         });
     });
@@ -112,6 +119,7 @@ exports.count = function() {
             db.get("select count(notekey) as count from notes",
                 (err, row) => {
                     if (err) return reject(err);
+                    log('COUNT '+ util.inspect(row));
                     resolve(row.count);
                 });
         });

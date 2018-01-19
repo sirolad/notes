@@ -1,7 +1,10 @@
-const fs = require('fs-extra');
-const path = require('path');
-const util = require('util');
-const log = require('debug')('notes:fs-model');
+'use strict';
+
+const fs    = require('fs-extra');
+const path  = require('path');
+const util  = require('util');
+
+const log   = require('debug')('notes:fs-model');
 const error = require('debug')('notes:error');
 
 const Note = require('./Note');
@@ -77,20 +80,20 @@ exports.keylist = function() {
             });
         });
     })
-        .then(data => {
-            log('keylist dir='+ data.notesdir +' files='+ util.inspect(data.filez));
-            var thenotes = data.filez.map(fname => {
-                var key = path.basename(fname, '.json');
-                log('About to READ '+ key);
-                return readJSON(data.notesdir, key).then(thenote => {
-                    return thenote.key;
-                });
+    .then(data => {
+        log('keylist dir='+ data.notesdir +' files='+ util.inspect(data.filez));
+        var thenotes = data.filez.map(fname => {
+            var key = path.basename(fname, '.json');
+            log('About to READ '+ key);
+            return readJSON(data.notesdir, key).then(thenote => {
+                return thenote.key;
             });
-            return Promise.all(thenotes);
         });
+        return Promise.all(thenotes);
+    });
 };
 
-exports.count = function() {
+exports.count   = function()    {
     return notesDir().then(notesdir => {
         return new Promise((resolve, reject) => {
             fs.readdir(notesdir, (err, filez) => {
@@ -100,4 +103,3 @@ exports.count = function() {
         });
     });
 };
-

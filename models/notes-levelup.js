@@ -1,23 +1,27 @@
-const util = require('util');
+'use strict';
+
+const util    = require('util');
 const levelup = require('levelup');
-const log = require('debug')('notes:levelup-model');
-const error = require('debug')('notes:error');
-const Note = require('./Note');
-let db; // store the database connection here
+
+const log     = require('debug')('notes:levelup-model');
+const error   = require('debug')('notes:error');
+
+const Note    = require('./Note');
+
+var db; // store the database connection here
 
 function connectDB() {
     return new Promise((resolve, reject) => {
         if (db) return resolve(db);
-        levelup(process.env.LEVELUP_DB_LOCATION
-            || 'notes.levelup', {
-                createIfMissing: true,
-                valueEncoding: "json"
-            },
-            (err, _db) => {
-                if (err) return reject(err);
-                db = _db;
-                resolve();
-            });
+        levelup(process.env.LEVELUP_DB_LOCATION || 'notes.levelup', {
+            createIfMissing: true,
+            valueEncoding: "json"
+        },
+        (err, _db) => {
+            if (err) return reject(err);
+            db = _db;
+            resolve();
+        });
     });
 }
 
@@ -38,8 +42,7 @@ exports.read = function(key) {
         return new Promise((resolve, reject) => {
             db.get(key, (err, note) => {
                 if (err) reject(err);
-                else resolve(new Note(note.key,
-                    note.title, note.body));
+                else resolve(new Note(note.key, note.title, note.body));
             });
         });
     });
@@ -61,9 +64,9 @@ exports.keylist = function() {
         var keyz = [];
         return new Promise((resolve, reject) => {
             db.createReadStream()
-                .on('data', data => keyz.push(data.key))
-                .on('error', err => reject(err))
-                .on('end', () => resolve(keyz));
+              .on('data', data => keyz.push(data.key))
+              .on('error', err => reject(err))
+              .on('end',   ()  => resolve(keyz));
         });
     });
 };
@@ -73,9 +76,9 @@ exports.count = function() {
         var total = 0;
         return new Promise((resolve, reject) => {
             db.createReadStream()
-                .on('data', data => total++)
-                .on('error', err => reject(err))
-                .on('end', () => resolve(total));
+              .on('data', data => total++)
+              .on('error', err => reject(err))
+              .on('end',   ()  => resolve(total));
         });
     });
 };

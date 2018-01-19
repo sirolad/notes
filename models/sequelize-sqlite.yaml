@@ -2,5 +2,5 @@ dbname: notes
 username:
 password:
 params:
-  dialect: sqlite
-  storage: notes-sequelize.sqlite3
+    dialect: sqlite
+    storage: notes-sequelize.sqlite3
